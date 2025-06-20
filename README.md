@@ -156,8 +156,7 @@ beastboy-voice-assistant/
 ├── beastboy.log            # Application logs
 ├── requirements.txt         # Python dependencies
 ├── README.md               # This file
-└── assets/                 # Icons and resources
-    └── icon.ico            # System tray icon
+
 ```
 
 ## 🔧 Dependencies
