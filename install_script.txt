@@ -1,0 +1,106 @@
+@echo off
+echo Beastboy Voice Assistant - Installation Script
+echo =============================================
+echo.
+
+REM Check if Python is installed
+python --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Python is not installed or not in PATH
+    echo.
+    echo Please install Python 3.7+ from https://python.org
+    echo Make sure to check "Add Python to PATH" during installation
+    echo.
+    pause
+    exit /b 1
+)
+
+echo [INFO] Python found: 
+python --version
+
+REM Check pip
+pip --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] pip is not available
+    echo Please reinstall Python with pip included
+    pause
+    exit /b 1
+)
+
+echo [INFO] pip found:
+pip --version
+echo.
+
+REM Create virtual environment
+echo [STEP 1/4] Creating virtual environment...
+if exist "venv" (
+    echo Virtual environment already exists, skipping...
+) else (
+    python -m venv venv
+    if %errorlevel% neq 0 (
+        echo [ERROR] Failed to create virtual environment
+        pause
+        exit /b 1
+    )
+    echo [SUCCESS] Virtual environment created
+)
+echo.
+
+REM Activate virtual environment
+echo [STEP 2/4] Activating virtual environment...
+call venv\Scripts\activate.bat
+echo [SUCCESS] Virtual environment activated
+echo.
+
+REM Upgrade pip
+echo [STEP 3/4] Upgrading pip...
+python -m pip install --upgrade pip
+echo.
+
+REM Install requirements
+echo [STEP 4/4] Installing requirements...
+echo This may take a few minutes...
+echo.
+
+echo Installing core requirements...
+pip install speechrecognition pyttsx3 psutil requests pystray pillow
+
+REM Try to install PyAudio
+echo.
+echo Installing PyAudio (audio processing)...
+pip install pyaudio
+if %errorlevel% neq 0 (
+    echo [WARNING] PyAudio installation failed
+    echo Trying alternative installation method...
+    pip install pipwin
+    pipwin install pyaudio
+    if %errorlevel% neq 0 (
+        echo [ERROR] PyAudio installation failed
+        echo Please install Microsoft Visual C++ Build Tools
+        echo Download from: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+        echo Or download PyAudio wheel from: https://www.lfd.uci.edu/~gohlke/pythonlibs/#pyaudio
+        echo.
+        echo You can continue without PyAudio, but voice recognition may not work
+        pause
+    )
+)
+
+REM Install optional features
+echo.
+echo Installing optional features...
+pip install openai googletrans wikipedia yfinance aiohttp
+
+echo.
+echo [SUCCESS] Installation completed!
+echo.
+echo Next steps:
+echo 1. Edit config.json to add your OpenAI API key (optional)
+echo 2. Run start_beastboy.bat to start the assistant
+echo 3. The assistant will run in the background and respond to "Hey BB"
+echo.
+echo Troubleshooting:
+echo - If microphone doesn't work, check Windows privacy settings
+echo - If PyAudio failed, you may need Visual C++ Build Tools
+echo - Check beastboy.log for error messages
+echo.
+pause

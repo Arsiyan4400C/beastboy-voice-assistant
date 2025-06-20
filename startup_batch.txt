@@ -1,0 +1,49 @@
+@echo off
+echo Starting Beastboy Voice Assistant...
+echo.
+
+REM Check if Python is installed
+python --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Python is not installed or not in PATH
+    echo Please install Python 3.7+ from https://python.org
+    pause
+    exit /b 1
+)
+
+REM Check if virtual environment exists
+if not exist "venv" (
+    echo Creating virtual environment...
+    python -m venv venv
+    if %errorlevel% neq 0 (
+        echo Failed to create virtual environment
+        pause
+        exit /b 1
+    )
+)
+
+REM Activate virtual environment
+echo Activating virtual environment...
+call venv\Scripts\activate.bat
+
+REM Install/upgrade requirements
+echo Installing requirements...
+pip install -r requirements.txt
+
+REM Check if config exists
+if not exist "config.json" (
+    echo First run detected - config.json will be created
+)
+
+REM Start Beastboy
+echo Starting Beastboy Voice Assistant in background mode...
+echo The assistant will minimize to system tray after startup.
+echo.
+python beastboy.py
+
+REM Deactivate virtual environment
+deactivate
+
+echo.
+echo Beastboy has stopped.
+pause

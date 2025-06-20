@@ -1,0 +1,20 @@
+# Core requirements (mandatory)
+speechrecognition>=3.8.1
+pyttsx3>=2.90
+psutil>=5.8.0
+pyaudio>=0.2.11
+requests>=2.25.1
+pystray>=0.19.4
+pillow>=8.0.0
+
+# Optional features (enhanced functionality)
+openai>=0.27.0
+googletrans>=4.0.0
+wikipedia>=1.4.0
+yfinance>=0.1.70
+aiohttp>=3.8.0
+
+# Development dependencies (optional)
+pytest>=6.0.0
+black>=21.0.0
+flake8>=3.8.0
